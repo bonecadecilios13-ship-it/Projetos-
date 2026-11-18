@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rebeca Lourenço · Boneca de Cílios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14080f; --bg2:#1f0e19; --card:#231220; --line:rgba(240,170,200,.16);
+  --rosa:#e0569a; --rosa2:#f39ac2; --blush:#f6d3e2; --ouro:#e7bfa6;
+  --txt:#fbeef4; --muted:#bfa2b2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Montserrat,system-ui,sans-serif;color:var(--txt);background:var(--bg);-webkit-font-smoothing:antialiased;padding-bottom:96px}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(90% 50% at 50% 0%,rgba(224,86,154,.28),transparent 70%),
+  radial-gradient(60% 40% at 100% 60%,rgba(224,86,154,.08),transparent 70%),var(--bg)}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:460px;margin:0 auto;padding:0 16px}
+.serif{font-family:"Playfair Display",Georgia,serif}
+
+/* HEADER */
+header{text-align:center;padding:34px 0 8px}
+.mono{font-family:"Playfair Display",serif;font-size:26px;letter-spacing:.06em;color:var(--blush);line-height:1}
+.mono small{display:block;font-family:Montserrat;font-size:8.5px;letter-spacing:.42em;color:var(--ouro);margin-top:6px}
+.avatar{width:118px;height:118px;border-radius:50%;object-fit:cover;margin:22px auto 0;display:block;padding:3px;background:linear-gradient(135deg,var(--ouro),var(--rosa),var(--ouro))}
+h1{font-family:"Playfair Display",serif;font-weight:600;font-size:27px;margin-top:14px}
+.tag{margin:8px auto 0;max-width:330px;font-size:15px;line-height:1.45;color:#ead6e0}
+.tag b{color:#fff}
+.tag i{display:block;font-family:"Playfair Display",serif;font-size:17px;color:var(--rosa2)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin:16px auto 6px;max-width:340px}
+.chip{font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--blush)}
+
+.black{margin-top:22px;text-align:center;padding:24px 18px 22px;border-radius:22px;background:linear-gradient(160deg,#0b0509,#1d0a17);border:1px solid rgba(231,191,166,.35);box-shadow:inset 0 0 40px rgba(224,86,154,.12)}
+.bk-k{font-size:9.5px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--ouro)}
+.black h2{font-family:"Playfair Display",serif;font-weight:500;font-style:italic;font-size:24px;margin:8px 0 14px;color:#fff}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:330px;margin:0 auto}
+.cd div{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px 0 8px}
+.cd b{display:block;font-family:"Playfair Display",serif;font-size:28px;font-weight:500;color:var(--blush);line-height:1}
+.cd span{display:block;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.black p{font-size:12.5px;color:#d9c3cf;margin:14px auto 16px;max-width:300px;line-height:1.5}
+.bk-btn{display:inline-block;padding:13px 22px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#1a0b14;background:linear-gradient(90deg,var(--ouro),#f6dcc9,var(--ouro))}
+/* CARDS GRANDES */
+.cards{display:grid;gap:12px;margin-top:22px}
+.big{position:relative;display:block;height:170px;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.big img,.big video{position:absolute;right:0;top:0;height:100%;width:62%;object-fit:cover}
+.big:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--card) 34%,rgba(35,18,32,.82) 52%,rgba(35,18,32,0) 85%)}
+.big .in{position:relative;z-index:1;padding:20px 18px;max-width:66%;height:100%;display:flex;flex-direction:column;justify-content:center}
+.k{font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+.k.live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--rosa);margin-right:6px;vertical-align:1px}
+.big h2{font-size:18px;font-weight:600;line-height:1.2;margin:7px 0 6px}
+.big p{font-size:12px;color:var(--muted);line-height:1.4}
+.go{position:absolute;z-index:2;right:14px;top:14px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);font-size:16px}
+.big.tall{height:230px}
+.big video{object-fit:cover;object-position:50% 40%}
+.big.full{height:360px}
+.big.full video{width:100%}
+.big.full:after{background:linear-gradient(transparent 35%,rgba(35,18,32,.85) 70%,var(--card))}
+.big.full .in{justify-content:flex-end;max-width:100%;padding-bottom:22px}
+.big.hot .go{background:linear-gradient(135deg,var(--rosa),var(--rosa2));color:#fff}
+.big.noimg{background:radial-gradient(80% 120% at 100% 50%,rgba(224,86,154,.45),transparent 60%),var(--card)}
+.big.noimg:after{display:none}
+.big.noimg .glyph{position:absolute;right:22px;bottom:12px;font-family:"Playfair Display",serif;font-style:italic;font-size:64px;color:rgba(246,211,226,.18);z-index:0}
+
+/* TÍTULOS DE SEÇÃO */
+.sec{margin-top:34px}
+.st{text-align:center;font-size:10.5px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--ouro);margin-bottom:14px}
+.st:before,.st:after{content:"✦";font-size:7px;margin:0 10px;vertical-align:2px;color:var(--rosa2)}
+
+.hero-card{position:relative;height:440px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.track::-webkit-scrollbar{display:none}
+.track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;object-position:50% 35%;scroll-snap-align:start}
+.hero-card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(transparent,rgba(20,8,15,.78) 40%,rgba(20,8,15,.96));pointer-events:none}
+.hc-txt{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:18px 20px 30px;display:block}
+.hc-txt h2{font-size:22px;font-weight:600;line-height:1.2;margin:7px 0 5px}
+.hc-txt p{font-size:12.5px;color:var(--muted)}
+.hc-btn{display:inline-block;margin-top:12px;padding:10px 18px;border-radius:999px;background:linear-gradient(90deg,var(--rosa),var(--rosa2));font-size:12px;font-weight:700;letter-spacing:.06em}
+.dots{position:absolute;z-index:3;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:5px;pointer-events:none}
+.dots i{width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.4);transition:width .25s}
+.dots i.on{width:16px;background:#fff}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.res .dep{flex:none;width:100%;aspect-ratio:9/16;border-style:solid;border-color:var(--line)}
+.res .lbl{position:absolute;z-index:2;top:10px;left:10px;background:rgba(20,8,15,.7);backdrop-filter:blur(4px);font-size:9.5px;font-weight:700;letter-spacing:.14em;padding:5px 10px;border-radius:999px;color:var(--blush)}
+/* CARROSSEL DEPOIMENTOS */
+.rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.dep{flex:0 0 132px;aspect-ratio:9/14;border-radius:16px;scroll-snap-align:start;position:relative;overflow:hidden;border:1px dashed rgba(240,170,200,.35);background:linear-gradient(160deg,#2c1527,#1a0b16);display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-size:11px;color:var(--muted)}
+.dep img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dep.has{border-style:solid;border-color:var(--line)}
+.dep.on{border:2px solid var(--rosa2);box-shadow:0 0 0 4px rgba(243,154,194,.2)}
+.dep video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dep .ouvir{border:0;cursor:pointer;font-family:Montserrat;z-index:2;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);color:#2a0f22;font-size:9.5px;font-weight:700;letter-spacing:.12em;padding:5px 12px;border-radius:999px}
+
+/* LISTA */
+.row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+.row .th{flex:0 0 48px;height:48px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#3a1832,#5a2450);display:grid;place-items:center;font-size:20px}
+.row .th img{width:100%;height:100%;object-fit:cover}
+.row b{display:block;font-size:13.5px;font-weight:600}
+.row small{display:block;font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:2px}
+.row .r{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:.14em;color:var(--ouro);padding-left:6px}
+
+/* HISTÓRIA */
+.story{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.story .q{padding:22px 20px 18px;background:radial-gradient(100% 120% at 0% 0%,rgba(224,86,154,.3),transparent 60%)}
+.story .q p{font-family:"Playfair Display",serif;font-style:italic;font-size:19px;line-height:1.4}
+.story .q small{display:block;margin-top:8px;font-size:11.5px;color:var(--muted)}
+.tl{padding:6px 20px 8px 42px;position:relative}
+.tl:before{content:"";position:absolute;left:25px;top:16px;bottom:22px;width:1px;background:linear-gradient(var(--rosa2),transparent)}
+.s{position:relative;padding:10px 0}
+.s:before{content:"";position:absolute;left:-21px;top:15px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--rosa2)}
+.s b{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+.s h3{font-family:"Playfair Display",serif;font-weight:500;font-size:16.5px;margin:2px 0 3px}
+.s p{font-size:12.5px;color:#d9c3cf;line-height:1.5}
+.s .big70{font-family:"Playfair Display",serif;font-size:30px;color:var(--rosa2)}
+.story .end{margin:4px 14px 14px;padding:16px;border-radius:14px;background:rgba(246,211,226,.08);font-size:13.5px;line-height:1.5}
+.story .end b{color:var(--rosa2)}
+.more{display:block;width:100%;background:none;border:0;border-top:1px solid var(--line);color:var(--blush);font:600 11px Montserrat;letter-spacing:.18em;text-transform:uppercase;padding:14px;cursor:pointer}
+.story.closed .hide{display:none}
+
+.hv{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);margin-bottom:12px;aspect-ratio:9/16;max-height:620px;background:#000}
+.hv video{width:100%;height:100%;object-fit:cover;display:block}
+.hv-play{position:absolute;inset:0;border:0;cursor:pointer;color:#fff;font-family:Montserrat;font-size:13px;font-weight:700;letter-spacing:.06em;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:34px;background:linear-gradient(transparent 50%,rgba(20,8,15,.85))}
+.hv-play span{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,var(--rosa),var(--rosa2));box-shadow:0 10px 30px -8px rgba(224,86,154,.8);margin-bottom:14px;padding-left:4px}
+.hv-play small{font-weight:500;font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.1em}
+.hv.playing .hv-play{display:none}
+/* PILARES */
+.pils{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pil{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center}
+.pil span{font-family:"Playfair Display",serif;font-style:italic;font-size:20px;color:var(--rosa2)}
+.pil b{display:block;font-size:11.5px;font-weight:600;margin-top:6px;line-height:1.3}
+
+.why{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.w{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 14px}
+.w b{display:block;font-family:"Playfair Display",serif;font-size:26px;font-weight:500;color:var(--rosa2);line-height:1.1;margin-bottom:6px}
+.w span{font-size:12px;color:#e3cfda;line-height:1.4;display:block}
+.aluna-q{text-align:center;font-family:"Playfair Display",serif;font-style:italic;font-size:17px;margin-top:16px;color:var(--blush)}
+.aluna-q small{display:block;font-family:Montserrat;font-style:normal;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro);margin-top:6px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:8px}
+summary{font-weight:600;font-size:13.5px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";color:var(--rosa2);font-size:18px;line-height:1}
+details[open] summary:after{content:"–"}
+details p{font-size:13px;color:#d9c3cf;margin-top:8px;line-height:1.5}
+.soc{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.soc a{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 14px}
+.soc span{display:block;font-size:9.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+.soc b{display:block;font-size:13px;font-weight:600;margin-top:4px}
+.closing{text-align:center;padding:26px 18px;border-radius:22px;background:radial-gradient(100% 120% at 50% 0%,rgba(224,86,154,.28),transparent 70%),var(--card);border:1px solid var(--line)}
+.closing p{font-size:20px;line-height:1.35}
+.closing em{color:var(--rosa2)}
+.closing small{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
+/* CHIPS ALUNA */
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-size:12.5px;background:rgba(255,255,255,.03)}
+.addr{text-align:center;font-size:11px;color:var(--muted);margin:22px 0 6px;line-height:1.6}
+
+.todo{display:inline-block;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#ffe9a8;color:#5c4300;border-radius:4px;padding:1px 5px;vertical-align:1px}
+
+/* BOTÃO FIXO */
+.cta{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(20,8,15,.95) 35%);z-index:9}
+.cta a{display:block;max-width:428px;margin:0 auto;text-align:center;padding:17px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;background:linear-gradient(90deg,#c63f84,var(--rosa),#ef86b6);box-shadow:0 12px 30px -10px rgba(224,86,154,.75)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="mono">Boneca<small>DE CÍLIOS · BEAUTY ACADEMY</small></div>
+  <img class="avatar" src="img/rebeca.jpg" alt="Rebeca Lourenço">
+  <h1>Rebeca Lourenço</h1>
+  <p class="tag">Eu formo <b>iniciantes</b> em lash designers: <i>do zero à agenda cheia.</i></p>
+  <div class="chips">
+    <span class="chip">+9 anos de profissão</span>
+    <span class="chip">Alunas em todo o Brasil</span>
+    <span class="chip">Parque São Domingos · SP</span>
+  </div>
+</header>
+
+<section class="black" id="black">
+  <div class="bk-k">Black Boneca de Cílios</div>
+  <h2>A Black começa em</h2>
+  <div class="cd" id="cd">
+    <div><b id="cd-d">00</b><span>dias</span></div>
+    <div><b id="cd-h">00</b><span>horas</span></div>
+    <div><b id="cd-m">00</b><span>min</span></div>
+    <div><b id="cd-s">00</b><span>seg</span></div>
+  </div>
+  <p id="bk-txt">Condições especiais no curso Lash Pro, só para quem estiver no grupo VIP.</p>
+  <a class="bk-btn" href="https://chat.whatsapp.com/KJGP97eagEf60qVljW9bM2?s=cl&amp;p=i&amp;iam=2">Quero entrar no grupo VIP</a>
+</section>
+
+<div class="cards">
+  <div class="hero-card" id="hc">
+    <div class="track" id="track"><img src="img/alunas.jpg" alt="Rebeca com alunas formadas"><img src="img/turma1.jpg" alt="Rebeca com alunas formadas"><img src="img/turma2.jpg" alt="Rebeca com alunas formadas" loading="lazy"><img src="img/turma3.jpg" alt="Rebeca com alunas formadas" loading="lazy"><img src="img/turma4.jpg" alt="Rebeca com alunas formadas" loading="lazy"><img src="img/turma5.jpg" alt="Rebeca com alunas formadas" loading="lazy"><img src="img/turma6.jpg" alt="Rebeca com alunas formadas" loading="lazy"></div>
+    <a class="hc-txt" href="https://wa.me/5511985843643?text=Oi%2C%20Rebeca%21%20Quero%20saber%20o%20valor%20dos%20cursos%20de%20c%C3%ADlios%20%E2%9C%A8">
+      <div class="k">Lash Pro · curso presencial de 14h</div>
+      <h2>Quero saber o valor dos cursos</h2>
+      <p>Datas, vagas e valores direto comigo</p>
+      <span class="hc-btn">Quero saber →</span>
+    </a>
+    <div class="dots" id="dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <a class="big" href="https://wa.me/5511985843643?text=Oi%21%20Quero%20agendar%20um%20atendimento%20na%20Boneca%20Beauty%20Clinic%20%F0%9F%92%97">
+    <img src="img/resultado.jpg" alt="" style="object-position:50% 35%">
+    <div class="in"><div class="k">Boneca Beauty Clinic</div><h2>Agende seu atendimento</h2><p>Cílios, unhas e mais cuidados em um só lugar</p></div>
+    <span class="go">→</span>
+  </a>
+  <a class="big" href="#historia">
+    <img src="img/rebeca-branco.jpg" alt="" style="object-position:50% 20%">
+    <div class="in"><div class="k">Minha história</div><h2>Comecei com R$ 70 e uma cadeira da cozinha</h2><p>De mãe recomeçando à clínica própria</p></div>
+    <span class="go">↓</span>
+  </a>
+  <a class="big full" href="#CANAL">
+    <video class="auto" src="img/fachada.mp4" poster="img/fachada.jpg" muted autoplay loop playsinline preload="auto"></video>
+    <div class="in"><div class="k live">Canal no Instagram</div><h2>Boneca Lovers</h2><p>Dicas, bastidores e vagas abertas primeiro</p></div>
+    <span class="go">→</span>
+  </a>
+</div>
+
+<section class="sec">
+  <div class="st">Quem já fez</div>
+  <div class="rail">
+    <div class="dep has vid"><video src="img/dep1.mp4" poster="img/dep1.jpg" muted autoplay loop playsinline preload="auto"></video><button class="ouvir">OUVIR</button></div>
+    <div class="dep has vid"><video src="img/dep3.mp4" poster="img/dep3.jpg" muted autoplay loop playsinline preload="auto"></video><button class="ouvir">OUVIR</button></div>
+    <div class="dep has vid"><video src="img/dep2.mp4" poster="img/dep2.jpg" muted autoplay loop playsinline preload="auto"></video><button class="ouvir">OUVIR</button></div>
+    <div class="dep has vid"><video src="img/dep4.mp4" poster="img/dep4.jpg" muted autoplay loop playsinline preload="auto"></video><button class="ouvir">OUVIR</button></div>
+    <div class="dep has vid"><video src="img/dep5.mp4" poster="img/dep5.jpg" muted autoplay loop playsinline preload="auto"></video><button class="ouvir">OUVIR</button></div>
+    <div class="dep">print de depoimento<br><span class="todo">enviar</span></div>
+    <div class="dep">aluna atendendo<br><span class="todo">enviar</span></div>
+    <div class="dep">turma<br><span class="todo">enviar</span></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="st">Resultado de aluna</div>
+  <div class="res">
+    <div class="dep has"><video src="img/res2.mp4" poster="img/res2.jpg" muted autoplay loop playsinline preload="auto" class="auto"></video><span class="lbl">ANTES E DEPOIS</span></div>
+    <div class="dep has"><video src="img/res1.mp4" poster="img/res1.jpg" muted autoplay loop playsinline preload="auto" class="auto"></video><span class="lbl">RESULTADO</span></div>
+  </div>
+</section>
+
+<section class="sec" id="historia">
+  <div class="st">Minha história</div>
+  <div class="hv" id="hv">
+    <video id="hvid" src="img/historia1.mp4" poster="img/historia.jpg" playsinline preload="metadata"></video>
+    <button class="hv-play" id="hplay"><span>▶</span>Assistir minha história<small>4 min · com som</small></button>
+  </div>
+  <div class="story closed" id="story">
+    <div class="q">
+      <p>"Por que você não faz um curso de cílios? Acho a sua cara."</p>
+      <small>Foi o que uma amiga me disse em 2018. Eu respondi: "Eu? Não tenho paciência pra isso!"</small>
+    </div>
+    <div class="tl">
+      <div class="s"><b>2018</b><h3>A Laura nasce</h3><p>Acabou a licença e eu não consegui voltar. Escolhi ficar com ela e procurar um jeito de trabalhar de casa.</p></div>
+      <div class="s"><b>O primeiro atendimento</b><div class="big70">R$ 70</div><p>Uma maca na sala, que era junto com a cozinha, e uma cadeira da cozinha.</p></div>
+      <div class="s hide"><b>Recomeço</b><h3>Roupas, feira e um curso em Jundiaí</h3><p>Tentei de tudo até me apaixonar pelos cílios. Depois veio o volume russo, o salão da minha amiga e as primeiras alunas.</p></div>
+      <div class="s hide"><b>Pandemia</b><h3>O quarto da Laura virou meu espaço</h3><p>Voltei para casa sem parar de atender.</p></div>
+      <div class="s hide"><b>Pirituba</b><h3>Dois anos, equipe e muitas turmas</h3><p>Eu tinha medo de perder clientes com tantas mudanças. Elas vieram comigo, e muitas estão ao meu lado até hoje.</p></div>
+      <div class="s hide"><b>Hoje</b><h3>Boneca Beauty Clinic</h3><p>Vários cuidados de beleza em um só lugar, feitos com o mesmo carinho do começo.</p></div>
+    </div>
+    <div class="end hide">Estar perto da minha filha, ter tempo de qualidade com ela… <b>isso não se compra e não se compara a nada.</b> É isso que eu quero te ensinar.</div>
+    <button class="more" id="more">Ler a história completa ↓</button>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="st">O que o curso te dá</div>
+  <div class="pils">
+    <div class="pil"><span>01</span><b>Tempo com quem você ama</b></div>
+    <div class="pil"><span>02</span><b>Liberdade geográfica</b></div>
+    <div class="pil"><span>03</span><b>Agenda cheia e seu dinheiro</b></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="st">Por que aprender comigo</div>
+  <div class="why">
+    <div class="w"><b>+9</b><span>anos atendendo e formando lash designers</span></div>
+    <div class="w"><b>14h</b><span>de curso presencial intensivo, na prática</span></div>
+    <div class="w"><b>Apoio</b><span>pelo WhatsApp e presencial, depois do curso</span></div>
+    <div class="w"><b>3 a 5</b><span>alunas por turma, ou opção VIP</span></div>
+  </div>
+  <p class="aluna-q">"O apoio que ela dá é diferenciado."<small>aluna Lash Pro</small></p>
+</section>
+
+<section class="sec">
+  <div class="st">Dúvidas</div>
+  <details><summary>Nunca trabalhei com cílios. Posso fazer?</summary><p>Pode, sim. O Lash Pro foi pensado para quem está começando do zero.</p></details>
+  <details><summary>Como é o curso?</summary><p>É presencial e intensivo, com 14 horas, aqui na Boneca de Cílios, no Parque São Domingos (SP). As turmas são pequenas, de 3 a 5 alunas, e você também pode escolher a opção VIP.</p></details>
+  <details><summary>Recebo certificado?</summary><p>Sim. Você recebe o certificado Lash Pro assinado por mim.</p></details>
+  <details><summary>E depois do curso?</summary><p>Você continua tendo meu apoio pelo WhatsApp e também presencial, para tirar dúvidas e começar a atender com segurança.</p></details>
+  <details><summary>Quanto custa e quais são as próximas datas?</summary><p>Me chama no WhatsApp que eu te passo valores, formas de pagamento e as vagas abertas.</p></details>
+</section>
+
+<section class="sec">
+  <div class="st">Me acompanhe</div>
+  <div class="soc">
+    <a href="https://www.instagram.com/boneca.decilios/"><span>Instagram</span><b>@boneca.decilios</b></a>
+    <a href="https://www.tiktok.com/@boneca.decilios"><span>TikTok</span><b>@boneca.decilios</b></a>
+  </div>
+  <a class="row" href="https://wa.me/5511985843643?text=Oi%21%20Quero%20ser%20modelo%20para%20as%20alunas%20%E2%9C%A8" style="margin-top:8px"><div class="th"><img src="img/resultado.jpg" alt=""></div><div><b>Quero ser modelo</b><small>Seja atendida pelas alunas durante o curso</small></div><span class="r">→</span></a>
+</section>
+
+<section class="sec closing">
+  <p class="serif">Se eu comecei cobrando R$ 70 numa cadeira da cozinha, <em>você também pode começar.</em></p>
+  <small>E você não precisa fazer isso sozinha.</small>
+</section>
+
+<p class="addr">Boneca de Cílios · Beauty Academy<br>Rua Brigadeiro Henrique Fontenele, 403 · Parque São Domingos, São Paulo/SP<br><a href="https://www.google.com/maps/search/?api=1&query=Rua%20Brigadeiro%20Henrique%20Fontenele%2C%20403%20-%20Parque%20S%C3%A3o%20Domingos%2C%20S%C3%A3o%20Paulo%20-%20SP" style="color:var(--rosa2)">Como chegar</a> · (11) 98584-3643</p>
+
+</div>
+
+<div class="cta"><a href="https://wa.me/5511985843643?text=Oi%2C%20Rebeca%21%20Vim%20pela%20sua%20p%C3%A1gina%20e%20quero%20saber%20mais%20sobre%20o%20curso%20%E2%9C%A8">Falar comigo no WhatsApp</a></div>
+
+<script>
+document.getElementById('more').addEventListener('click',function(){
+  var s=document.getElementById('story');
+  var c=s.classList.toggle('closed');
+  this.textContent=c?'Ler a história completa ↓':'Fechar ↑';
+});
+</script>
+<script>
+(function(){
+  var deps=[].slice.call(document.querySelectorAll('.dep.vid'));
+  var vids=deps.map(function(d){return d.querySelector('video');});
+  function tryPlay(v){var p=v.play();if(p&&p.catch)p.catch(function(){});}
+  // tocam sozinhos (sem som) quando aparecem na tela
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting)tryPlay(e.target); else if(e.target.muted)e.target.pause();
+    });},{threshold:.25});
+    vids.forEach(function(v){io.observe(v);});
+  } else vids.forEach(tryPlay);
+  deps.forEach(function(d){
+    var v=d.querySelector('video'), b=d.querySelector('.ouvir');
+    d.addEventListener('click',function(){
+      if(v.muted){
+        deps.forEach(function(o){var ov=o.querySelector('video');if(ov!==v){ov.muted=true;o.classList.remove('on');o.querySelector('.ouvir').textContent='OUVIR';}});
+        v.muted=false; v.currentTime=0; tryPlay(v); d.classList.add('on'); b.textContent='SILENCIAR';
+      } else {
+        v.muted=true; d.classList.remove('on'); b.textContent='OUVIR';
+      }
+    });
+  });
+})();
+</script>
+<script>
+(function(){
+  var t=document.getElementById('track'), d=[].slice.call(document.querySelectorAll('#dots i')), n=d.length, idle=true, timer;
+  function cur(){return Math.round(t.scrollLeft/t.clientWidth);}
+  t.addEventListener('scroll',function(){var c=cur();d.forEach(function(x,i){x.className=i===c?'on':'';});},{passive:true});
+  function next(){if(!idle)return;var c=(cur()+1)%n;t.scrollTo({left:c*t.clientWidth,behavior:c===0?'auto':'smooth'});}
+  timer=setInterval(next,3500);
+  t.addEventListener('touchstart',function(){idle=false;},{passive:true});
+  t.addEventListener('touchend',function(){setTimeout(function(){idle=true;},4000);},{passive:true});
+  document.querySelectorAll('video.auto').forEach(function(v){
+    if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){});}else v.pause();});},{threshold:.25}).observe(v);}
+  });
+})();
+</script>
+<script>
+(function(){
+  var w=document.getElementById('hv'),v=document.getElementById('hvid'),b=document.getElementById('hplay');
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.dep.vid video').forEach(function(o){o.muted=true;});
+    w.classList.add('playing'); v.controls=true; var p=v.play(); if(p&&p.catch)p.catch(function(){});
+  });
+  var part=1;
+  v.addEventListener('ended',function(){
+    if(part===1){part=2;v.src='img/historia2.mp4';var p=v.play();if(p&&p.catch)p.catch(function(){});}
+    else{part=1;v.src='img/historia1.mp4';w.classList.remove('playing');v.controls=false;}
+  });
+})();
+</script>
+<script>
+(function(){
+  var alvo=new Date('2026-11-20T00:00:00-03:00').getTime();
+  function z(n){return (n<10?'0':'')+n;}
+  function t(){
+    var d=alvo-Date.now();
+    if(d<=0){document.querySelector('#black h2').textContent='A Black começou!';document.getElementById('cd').style.display='none';document.querySelector('.bk-btn').textContent='Quero aproveitar a Black';return;}
+    var s=Math.floor(d/1000);
+    document.getElementById('cd-d').textContent=z(Math.floor(s/86400));
+    document.getElementById('cd-h').textContent=z(Math.floor(s%86400/3600));
+    document.getElementById('cd-m').textContent=z(Math.floor(s%3600/60));
+    document.getElementById('cd-s').textContent=z(s%60);
+    setTimeout(t,1000);
+  }
+  t();
+})();
+</script>
+</body>
+</html>
