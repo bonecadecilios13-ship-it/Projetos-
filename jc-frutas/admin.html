@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Painel JC Frutas</title>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#fbf7ec,#10241a);--ink:light-dark(#173322,#f3efe2);--muted:light-dark(#5b6b5f,#b9c4b6);
+--leaf:light-dark(#1e5a34,#2f7a4a);--banana:#f6c445;--tomato:light-dark(#d93a26,#ff6a52);--card:light-dark(#fff,#183526);--line:light-dark(#e4dcc6,#2b4a37);--soft:light-dark(#f1ead6,#1c3d2b)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Nunito,system-ui,sans-serif}
+header{background:var(--leaf);color:#fff;padding:16px}
+header .in,main{max-width:900px;margin:0 auto}
+main{padding:16px 16px 60px}
+h1{font:400 30px/1.1 "Bagel Fat One",Nunito,sans-serif;margin:0}
+h2{font:400 24px/1.1 "Bagel Fat One",Nunito,sans-serif;margin:24px 0 12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.row>*{flex:1 1 160px}
+label{display:block;font-weight:700;margin:12px 0 6px}
+input,select{width:100%;font:16px Nunito,sans-serif;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-height:46px}
+.btn{border:0;border-radius:12px;background:var(--leaf);color:#fff;font:800 15px Nunito;padding:10px 14px;min-height:44px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.red{background:var(--tomato)}.btn.ghost{background:var(--soft);color:var(--ink)}.btn.yel{background:var(--banana);color:#2a2200}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.tabs button{min-height:46px;border-radius:12px;border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff;font:800 15px Nunito;cursor:pointer}
+.tabs button[aria-pressed=true]{background:#fff;color:var(--leaf)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.kpi{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.kpi b{display:block;font-size:22px;white-space:nowrap}.kpi span{font-size:13px;color:var(--muted)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.card.aguardando{border-left:8px solid var(--banana)}.card.pago{border-left:8px solid #3a9a5a}.card.entregue{border-left:8px solid var(--leaf);opacity:.8}.card.cancelado{opacity:.5}
+.top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.st{font-size:12px;font-weight:800;padding:3px 8px;border-radius:8px;background:var(--soft);white-space:nowrap}
+.st.pago{background:#d7f0dc;color:#1e5a34}.st.entregue{background:#1e5a34;color:#fff}.st.aguardando{background:var(--banana);color:#2a2200}
+.muted{color:var(--muted);font-size:14px}
+ul{margin:8px 0;padding-left:20px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden}
+td,th{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td.n,th.n{text-align:right;white-space:nowrap}
+.hidden{display:none!important}
+.err{color:var(--tomato);font-weight:700;min-height:1.2em;margin-top:8px}
+.box{max-width:420px;margin:40px auto;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:20px}
+@media(max-width:600px){.kpis{grid-template-columns:1fr 1fr}.kpi b{font-size:18px}table{font-size:14px}}
+@media(max-width:600px){.stack thead{display:none}.stack tr{display:grid;padding:8px 0;border-bottom:1px solid var(--line)}.stack td{border:0;padding:3px 10px;text-align:left}.stack td[data-l]::before{content:attr(data-l) ": ";color:var(--muted);font-size:13px}}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <div class="top"><h1>Painel JC Frutas</h1><button class="btn ghost hidden" id="sair" type="button">Sair</button></div>
+  <div class="tabs hidden" id="tabs">
+    <button type="button" data-t="pedidos" aria-pressed="true">Pedidos</button>
+    <button type="button" data-t="compras" aria-pressed="false">Comprar</button>
+    <button type="button" data-t="clientes" aria-pressed="false">Clientes</button>
+  </div>
+</div></header>
+
+<main>
+  <form class="box" id="login" novalidate>
+    <h2 style="margin-top:0">Entrar no painel</h2>
+    <label for="email">E-mail do administrador</label><input id="email" type="email" autocomplete="email">
+    <label for="senha">Senha</label><input id="senha" type="password" autocomplete="current-password">
+    <div class="err" id="lErr" role="alert"></div>
+    <button class="btn" type="submit" style="width:100%;margin-top:8px">Entrar</button>
+    <p class="muted">Primeira vez? Crie a conta no site com este mesmo e-mail (botão Entrar → Criar conta) e depois volte aqui.</p>
+  </form>
+
+  <div id="app" class="hidden">
+    <div class="row" id="filtros">
+      <div><label for="dia">Dia da feira</label><input id="dia" type="date"></div>
+      <div><label for="fst">Situação</label><select id="fst"><option value="">Todos</option><option value="aguardando">Aguardando pagamento</option><option value="pago">Pago</option><option value="entregue">Entregue</option><option value="cancelado">Cancelado</option></select></div>
+      <div style="flex:0 0 auto"><button class="btn yel" type="button" id="atual">Atualizar</button></div>
+    </div>
+
+    <section id="v-pedidos">
+      <div class="kpis" id="kpis"></div>
+      <div id="lista"></div>
+    </section>
+
+    <section id="v-compras" class="hidden">
+      <h2>O que comprar para este dia</h2>
+      <p class="muted">Soma dos pedidos <b>pagos</b> do dia escolhido. Pedidos aguardando pagamento não entram.</p>
+      <div id="compras"></div>
+    </section>
+
+    <section id="v-clientes" class="hidden">
+      <h2>Clientes</h2>
+      <input id="busca" placeholder="Buscar por nome, telefone, condomínio…" aria-label="Buscar cliente">
+      <div id="clientes" style="margin-top:12px"></div>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="produtos.js"></script>
+<script>
+{
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const brl=v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const ALL=[...CONFIG.combos,...CONFIG.produtos];
+const STX={aguardando:"Aguardando pagamento",pago:"Pago",entregue:"Entregue",cancelado:"Cancelado"};
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const fmtDia=s=>s?s.split("-").reverse().join("/"):"";
+const zap=f=>{const n=String(f||"").replace(/\D/g,"");return n?`https://wa.me/${n.length<=11?"55"+n:n}`:""};
+let api=null,view="pedidos",pedidos=[],clientes=[];
+try{api=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY)}catch(e){}
+if(!api){$("lErr").textContent="Supabase não configurado: preencha o config.js."}
+
+const am=new Date();am.setDate(am.getDate()+1);$("dia").value=iso(am);
+
+$("login").addEventListener("submit",async e=>{
+  e.preventDefault();if(!api)return;$("lErr").textContent="";
+  const {error}=await api.auth.signInWithPassword({email:$("email").value.trim(),password:$("senha").value});
+  if(error)$("lErr").textContent=/Invalid/i.test(error.message)?"E-mail ou senha incorretos.":error.message;
+});
+$("sair").onclick=()=>api.auth.signOut();
+
+async function entrou(sess){
+  if(!sess){$("login").classList.remove("hidden");$("app").classList.add("hidden");$("tabs").classList.add("hidden");$("sair").classList.add("hidden");return}
+  const {data:adm}=await api.rpc("sou_admin");
+  if(!adm){$("lErr").textContent="Este e-mail não está liberado como administrador.";await api.auth.signOut();return}
+  $("login").classList.add("hidden");$("app").classList.remove("hidden");$("tabs").classList.remove("hidden");$("sair").classList.remove("hidden");
+  carregar();
+}
+if(api)api.auth.onAuthStateChange((ev,sess)=>setTimeout(()=>entrou(sess),0));
+
+$("tabs").addEventListener("click",e=>{
+  const b=e.target.closest("[data-t]");if(!b)return;view=b.dataset.t;
+  document.querySelectorAll("#tabs button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  ["pedidos","compras","clientes"].forEach(t=>$("v-"+t).classList.toggle("hidden",t!==view));
+  $("filtros").classList.toggle("hidden",view==="clientes");
+  carregar();
+});
+$("dia").onchange=carregar;$("fst").onchange=desenhaPedidos;$("atual").onclick=carregar;$("busca").oninput=desenhaClientes;
+
+async function carregar(){
+  if(view==="clientes"){
+    const {data,error}=await api.from("perfis").select("id,nome,fone,email,condominio,apartamento,criado_em,pedidos(total,status,criado_em,frequencia)").order("criado_em",{ascending:false});
+    clientes=error?[]:data||[];desenhaClientes();return;
+  }
+  const {data,error}=await api.from("pedidos").select("*,perfis(nome,fone,email)").eq("dia",$("dia").value).order("criado_em",{ascending:true});
+  pedidos=error?[]:data||[];
+  if(error)$("lista").innerHTML=`<p class="err">${esc(error.message)}</p>`;
+  view==="pedidos"?desenhaPedidos():desenhaCompras();
+}
+function desenhaPedidos(){
+  const f=$("fst").value,ls=pedidos.filter(p=>!f||p.status===f);
+  const pagos=pedidos.filter(p=>p.status==="pago"||p.status==="entregue"),agu=pedidos.filter(p=>p.status==="aguardando");
+  $("kpis").innerHTML=`<div class="kpi"><b>${pedidos.filter(p=>p.status!=="cancelado").length}</b><span>pedidos no dia</span></div>
+    <div class="kpi"><b>${brl(pagos.reduce((s,p)=>s+Number(p.total),0))}</b><span>pagos (${pagos.length})</span></div>
+    <div class="kpi"><b>${brl(agu.reduce((s,p)=>s+Number(p.total),0))}</b><span>aguardando (${agu.length})</span></div>`;
+  $("lista").innerHTML=ls.length?ls.map(p=>{
+    const c=p.perfis||{},z=zap(c.fone);
+    const acoes=p.status==="aguardando"?`<button class="btn" data-c="${esc(p.codigo)}" data-s="pago">Pagamento confirmado</button><button class="btn red" data-c="${esc(p.codigo)}" data-s="cancelado">Cancelar</button>`
+      :p.status==="pago"?`<button class="btn" data-c="${esc(p.codigo)}" data-s="entregue">Marcar entregue</button><button class="btn ghost" data-c="${esc(p.codigo)}" data-s="aguardando">Voltar p/ aguardando</button>`
+      :`<button class="btn ghost" data-c="${esc(p.codigo)}" data-s="${p.status==="entregue"?"pago":"aguardando"}">Desfazer</button>`;
+    return `<article class="card ${esc(p.status)}">
+      <div class="top"><b>${esc(p.codigo)} · ${brl(p.total)}</b><span class="st ${esc(p.status)}">${esc(STX[p.status]||p.status)}</span></div>
+      <div><b>${esc(c.nome||"Cliente")}</b> · ${esc(c.fone||"")} ${z?`· <a href="${z}" target="_blank" rel="noopener">WhatsApp</a>`:""}</div>
+      <div class="muted">${p.entrega?`Entregar: ${esc(p.condominio||"")}, ${esc(p.apartamento||"")}`:`Retira na banca (${esc(p.condominio||"")})`} · Pagamento: ${p.pagamento==="cartao"?"cartão (link)":"Pix"}${p.frequencia?` · Pedido fixo: ${esc(p.frequencia)}`:""}</div>
+      <ul>${(p.linhas||[]).map(l=>`<li>${esc(l)}</li>`).join("")}</ul>
+      ${p.obs?`<div class="muted">Obs.: ${esc(p.obs)}</div>`:""}
+      <div class="acts">${acoes}</div></article>`}).join(""):`<p class="muted">Nenhum pedido ${f?"com essa situação ":""}para ${fmtDia($("dia").value)}.</p>`;
+}
+$("lista").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-s]");if(!b)return;
+  if(b.dataset.s==="cancelado"&&!b.dataset.ok){b.dataset.ok=1;b.textContent="Toque de novo para cancelar";return}
+  b.disabled=true;
+  const {error}=await api.rpc("mudar_status",{p_codigo:b.dataset.c,p_status:b.dataset.s});
+  if(error){b.disabled=false;b.textContent="Erro, tente de novo";return}
+  carregar();
+});
+function desenhaCompras(){
+  const pagos=pedidos.filter(p=>p.status==="pago"||p.status==="entregue"),tot={};
+  pagos.forEach(p=>Object.entries(p.itens||{}).forEach(([id,n])=>{tot[id]=(tot[id]||0)+Number(n)}));
+  const linhas=Object.entries(tot).map(([id,n])=>{const c=ALL.find(x=>x.id===id)||{nome:id,lote:1};
+    const qt=c.itens?`${n} combo${n>1?"s":""}`:c.un==="kg"?`${n*(c.lote||1)} kg`:c.un==="cx"?`${n} caixa${n>1?"s":""}`:`${n*(c.lote||1)} un.`;
+    return {nome:c.nome,qt,combo:!!c.itens,itens:c.itens}}).sort((a,b)=>b.combo-a.combo||a.nome.localeCompare(b.nome));
+  $("compras").innerHTML=linhas.length?`<table class="stack"><thead><tr><th>Item</th><th class="n">Quantidade</th></tr></thead><tbody>${linhas.map(l=>`<tr><td><b>${esc(l.nome)}</b>${l.combo?`<div class="muted">${esc(l.itens.join(", "))}</div>`:""}</td><td class="n" data-l="Quantidade">${esc(l.qt)}</td></tr>`).join("")}</tbody></table><p class="muted">${pagos.length} pedido(s) pago(s) em ${fmtDia($("dia").value)}.</p>`:`<p class="muted">Nenhum pedido pago para ${fmtDia($("dia").value)} ainda.</p>`;
+}
+function desenhaClientes(){
+  const q=$("busca").value.trim().toLowerCase();
+  const ls=clientes.filter(c=>!q||[c.nome,c.fone,c.email,c.condominio].join(" ").toLowerCase().includes(q));
+  $("clientes").innerHTML=ls.length?`<table class="stack"><thead><tr><th>Cliente</th><th>Condomínio</th><th class="n">Pedidos</th><th class="n">Já gastou</th><th>Último pedido</th></tr></thead><tbody>${ls.map(c=>{
+    const ps=c.pedidos||[],pg=ps.filter(p=>p.status==="pago"||p.status==="entregue");
+    const ult=ps.map(p=>p.criado_em).sort().pop();const fixo=ps.find(p=>p.frequencia);const z=zap(c.fone);
+    return `<tr><td><b>${esc(c.nome||"Sem nome")}</b><div class="muted">${esc(c.email||"")}${c.fone?` · ${z?`<a href="${z}" target="_blank" rel="noopener">${esc(c.fone)}</a>`:esc(c.fone)}`:""}</div>${fixo?`<div class="muted">Pedido fixo: ${esc(fixo.frequencia)}</div>`:""}</td>
+      <td>${esc(c.condominio||"")}${c.apartamento?`<div class="muted">${esc(c.apartamento)}</div>`:""}</td>
+      <td class="n" data-l="Pedidos">${ps.length}</td><td class="n" data-l="Já gastou">${brl(pg.reduce((s,p)=>s+Number(p.total),0))}</td><td data-l="Último pedido">${ult?new Date(ult).toLocaleDateString("pt-BR"):"-"}</td></tr>`}).join("")}</tbody></table>`:`<p class="muted">Nenhum cliente encontrado.</p>`;
+}
+setInterval(()=>{if(api&&!$("app").classList.contains("hidden")&&view!=="clientes")carregar()},60000);
+}
+</script>
+</body>
+</html>

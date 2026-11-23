@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JC Frutas</title>
+<meta name="description" content="Frutas da feira com entrega no seu condomínio. Peça até as 20h, pague no Pix e receba no dia seguinte.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE: banca de feira amiga, direta, sem enrolação: escolhe, paga, recebe.
+IDEA: a lousa e o caixote da banca; cada combo é um caixote com etiqueta de preço.
+PICTURE: caixote de madeira cheio de frutas desenhado em SVG no topo.
+COLOUR and TYPE: verde-folha dominante, amarelo-banana de apoio, vermelho-tomate de destaque; Bagel Fat One + Nunito.
+LAYOUT: coluna única de celular: combos, dados, entrega, pagamento Pix.
+*/
+:root{color-scheme:light dark;
+--bg:light-dark(#fbf7ec,#10241a);--ink:light-dark(#173322,#f3efe2);--muted:light-dark(#5b6b5f,#b9c4b6);
+--leaf:light-dark(#1e5a34,#2f7a4a);--leafInk:#fff;--banana:light-dark(#f6c445,#e4b232);--tomato:light-dark(#d93a26,#ff6a52);
+--card:light-dark(#ffffff,#183526);--line:light-dark(#e4dcc6,#2b4a37);--soft:light-dark(#f1ead6,#1c3d2b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 48px}
+header{background:var(--leaf);color:var(--leafInk);padding:24px 16px 0}
+header .in{max-width:640px;margin:0 auto;display:block}
+h1{font:400 clamp(34px,8vw,48px)/1.05 "Bagel Fat One",Nunito,sans-serif;margin:0 0 8px;text-wrap:balance}
+header p{margin:0 0 20px;opacity:.92}
+header svg{width:100%;height:auto;display:block}
+h2{font:400 26px/1.1 "Bagel Fat One",Nunito,sans-serif;margin:32px 0 12px}
+.note{font-size:13px;color:var(--muted)}
+.combo{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;display:grid;gap:8px}
+.combo.on{border-color:var(--leaf);box-shadow:0 0 0 3px color-mix(in srgb,var(--leaf) 25%,transparent)}
+.ctop{display:flex;justify-content:space-between;gap:10px;align-items:start;flex-wrap:wrap}
+.cname{font:400 24px/1.1 "Bagel Fat One",Nunito,sans-serif}
+.serve{font-size:14px;color:var(--muted)}
+.price{background:var(--banana);color:#2a2200;font-weight:800;font-size:20px;padding:4px 12px;border-radius:10px;white-space:nowrap;transform:rotate(-2deg)}
+.item{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px 12px;margin-bottom:10px}
+.item.on{border-color:var(--leaf);background:color-mix(in srgb,var(--leaf) 8%,var(--card))}
+.foto{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;color:#fff;font:400 28px "Bagel Fat One",Nunito,sans-serif;overflow:hidden}
+.foto img{width:100%;height:100%;object-fit:cover}
+.iname{font-weight:800;font-size:17px;line-height:1.2}
+.iprice{font-weight:800;color:var(--leaf);white-space:nowrap}.iprice span{color:var(--muted);font-weight:600;font-size:14px}
+@media(max-width:400px){.item{grid-template-columns:52px minmax(0,1fr)}.foto{width:52px;height:52px}.item .step{grid-column:1/-1;justify-self:end}}
+.combo ul{margin:0;padding-left:20px;font-size:15px}
+.step{display:flex;align-items:center;gap:10px;justify-self:start}
+.step button{width:44px;height:44px;border-radius:50%;border:0;background:var(--leaf);color:#fff;font:800 22px Nunito;cursor:pointer}
+.step button:disabled{opacity:.35}
+.step output{font-weight:800;font-size:20px;min-width:2ch;text-align:center}
+label{display:block;font-weight:700;margin:14px 0 6px}
+input,textarea,select{width:100%;font:16px Nunito,sans-serif;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-height:48px}
+textarea{min-height:80px;resize:vertical}
+input:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--banana);outline-offset:2px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg button{min-height:56px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 16px Nunito;cursor:pointer;padding:8px}
+.seg button[aria-pressed=true]{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.hidden{display:none}
+.bar{position:sticky;bottom:0;background:var(--card);border-top:2px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));z-index:5}
+.bar .in{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.tot{font-size:14px;color:var(--muted)}.tot b{display:block;font-size:22px;color:var(--ink);white-space:nowrap}
+.btn{border:0;border-radius:14px;background:var(--tomato);color:#fff;font:800 17px Nunito;padding:14px 20px;min-height:52px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.btn.alt{background:var(--leaf)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.err{color:var(--tomato);font-weight:700;margin-top:10px;min-height:1.2em}
+#pay{background:var(--card);border:3px dashed var(--leaf);border-radius:20px;padding:20px;margin-top:28px;scroll-margin-top:16px}
+#pay h2{margin-top:0}
+.qr{background:#fff;padding:12px;border-radius:14px;width:244px;max-width:100%;margin:12px auto;display:grid;place-items:center}
+.qr img,.qr canvas{max-width:100%;height:auto}
+.code{font-family:ui-monospace,monospace;font-size:13px;background:var(--soft);padding:10px;border-radius:10px;overflow-wrap:anywhere;user-select:all}
+.resumo{background:var(--soft);border-radius:12px;padding:12px 14px;font-size:15px;white-space:pre-line}
+.warn{background:var(--banana);color:#2a2200;border-radius:12px;padding:10px 14px;font-weight:700;font-size:15px}
+.rule{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start;margin:10px 0}
+.rule span{width:32px;height:32px;border-radius:50%;background:var(--banana);color:#2a2200;display:grid;place-items:center;font-weight:800}
+.actions{display:grid;gap:10px;margin-top:16px}
+@media(max-width:600px){header .in{grid-template-columns:1fr}header svg{max-width:320px;margin:0 auto}}
+@media(prefers-reduced-motion:no-preference){.price{transition:transform .2s}.combo.on .price{transform:rotate(2deg) scale(1.06)}}
+
+header{position:relative;overflow:hidden;isolation:isolate}
+header:has(#bgv){min-height:min(72vh,560px);display:flex;align-items:flex-end}
+header:has(#bgv) .in{width:100%}
+#bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+#bgv+.in::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(18,60,34,0) 35%,rgba(18,60,34,.35) 60%,rgba(12,45,25,.88))}
+header h1,header p{text-shadow:0 2px 12px rgba(0,0,0,.55)}
+header:has(#bgv) svg{filter:drop-shadow(0 8px 16px rgba(0,0,0,.35))}
+.ticker{background:var(--banana);color:#2a2200;overflow:hidden;white-space:nowrap;font-weight:800;padding:10px 0}
+.track{display:inline-flex;gap:28px;padding-left:28px}
+.track span::after{content:"•";margin-left:28px;color:var(--tomato)}
+.isub{font-size:13px;color:var(--muted);font-weight:700;min-height:1em}
+.pop{animation:pop .35s ease}
+@keyframes pop{40%{transform:scale(1.07)}}
+.voo{position:fixed;width:20px;height:20px;border-radius:50%;z-index:20;pointer-events:none}
+@media(prefers-reduced-motion:no-preference){
+ .track{animation:roll 22s linear infinite}
+ @keyframes roll{to{transform:translateX(-50%)}}
+ .fr{animation:cai .9s cubic-bezier(.3,1.4,.6,1) both}
+ .fr:nth-of-type(2){animation-delay:.12s}.fr:nth-of-type(3){animation-delay:.24s}.fr:nth-of-type(4){animation-delay:.36s}.fr:nth-of-type(5){animation-delay:.48s}.fr:nth-of-type(6){animation-delay:.6s}
+ @keyframes cai{from{transform:translateY(-160px)}}
+ .item{animation:sobe .5s ease both}
+ @keyframes sobe{from{opacity:0;transform:translateY(16px)}}
+ #pay:not(.hidden){animation:sobe .5s ease}
+ .btn:not(:disabled){transition:transform .15s}.btn:not(:disabled):active{transform:scale(.96)}
+ #go:not(:disabled){animation:pulsa 1.8s ease-in-out infinite}
+ @keyframes pulsa{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--tomato) 25%,transparent)}}
+}
+.som{position:absolute;top:12px;right:12px;z-index:3;border:0;border-radius:999px;padding:10px 16px;min-height:44px;background:rgba(255,255,255,.92);color:#173322;font:800 15px Nunito;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.som[aria-pressed=true]{background:var(--banana)}
+.som.hidden{display:none}
+.conta{right:auto;left:12px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;display:grid;place-items:center;padding:16px;overflow:auto}
+.modal.hidden{display:none}
+.caixa{background:var(--bg);color:var(--ink);border-radius:20px;padding:20px;width:min(440px,100%);position:relative}
+.caixa h2{margin-top:0;padding-right:40px}
+.fechar{position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:none;color:var(--ink);font-size:28px;cursor:pointer}
+.link{background:none;border:0;color:var(--leaf);font:700 15px Nunito;text-decoration:underline;cursor:pointer;min-height:44px}
+.st{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:8px;margin-left:6px;background:var(--soft)}
+.st.pago{background:#d7f0dc;color:#1e5a34}.st.entregue{background:#1e5a34;color:#fff}.st.aguardando{background:var(--banana);color:#2a2200}.st.cancelado{background:#eee;color:#777}
+.kit{background:var(--card);border:2px solid var(--line);border-radius:20px;overflow:hidden;margin-bottom:16px}
+.kit.on{border-color:var(--leaf);box-shadow:0 0 0 3px color-mix(in srgb,var(--leaf) 25%,transparent)}
+.kit img{display:block;width:100%;height:190px;object-fit:cover}
+.kit .kb{padding:14px 16px;display:grid;gap:8px}
+.kit ul{margin:0;padding-left:20px;font-size:15px;columns:2;column-gap:18px}
+@media(max-width:400px){.kit ul{columns:1}}
+.kt{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.aviso{background:var(--banana);color:#2a2200;border-radius:16px;padding:12px 16px;margin-top:24px;font-size:15px}
+.cupom{background:var(--tomato);color:#fff;border-radius:16px;padding:12px 16px;font-weight:800;margin-top:24px}
+.cupom small{display:block;font-weight:600;opacity:.9}
+.meta{display:block;font-size:13px;font-weight:700;color:var(--tomato)}
+.meta.ok{color:var(--leaf)}
+.prog{height:5px;background:var(--line);border-radius:4px;max-width:640px;margin:0 auto 8px}
+.prog i{display:block;height:100%;width:0;background:var(--tomato);border-radius:4px;transition:width .4s}
+.prog i.ok{background:var(--leaf)}
+.ped{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ped small{display:block;color:var(--muted)}
+.ped .btn{padding:10px 14px;min-height:44px;font-size:15px}
+select{appearance:auto}
+</style>
+</head>
+<body>
+<header>
+  <button type="button" id="som" class="som" aria-pressed="false">♪ Música de feira</button>
+  <button type="button" id="conta" class="som conta hidden">Entrar</button>
+  <video id="bgv" autoplay muted loop playsinline preload="auto" aria-hidden="true"><source src="barraca.mp4" type="video/mp4"></video>
+  <div class="in">
+    <div>
+      <h1>JC Frutas</h1>
+      <p>Escolha suas frutas hoje, pague no Pix e receba a fruta fresquinha amanhã, aí no seu condomínio.</p>
+    </div>
+  </div>
+</header>
+<div class="ticker" aria-hidden="true"><div class="track"><span>É dia de feira</span><span>Pague no Pix</span><span>Receba amanhã</span><span>Entrega grátis no condomínio</span><span>Pedidos até as 20h</span><span>É dia de feira</span><span>Pague no Pix</span><span>Receba amanhã</span><span>Entrega grátis no condomínio</span><span>Pedidos até as 20h</span></div></div>
+
+<main class="wrap">
+  <div class="aviso" role="note"><b>Importante:</b> o pedido só é confirmado depois do pagamento (Pix ou cartão). Sem pagamento, o pedido não é separado nem entregue.</div>
+  <section id="hist" class="hidden"><h2>Seus pedidos</h2><div id="histList"></div></section>
+  <div class="cupom" id="cupomTop"></div>
+  <h2>1. Combos da semana</h2>
+  <div id="kits"></div>
+  <h2>Ou monte fruta por fruta</h2>
+  <div id="combos"></div>
+  <p class="note">Toque no + para adicionar cada lote. Dá para juntar combo com frutas avulsas.</p>
+
+  <h2>2. Retirar ou receber em casa?</h2>
+  <div class="seg" role="group" aria-label="Forma de entrega">
+    <button type="button" id="optRet" aria-pressed="false">Retiro na banca</button>
+    <button type="button" id="optEnt" aria-pressed="true">Entregar no meu apê</button>
+  </div>
+  <p class="note" id="prazoTxt"></p>
+
+  <h2>3. Seus dados</h2>
+  <form id="form" novalidate>
+    <label for="nome">Seu nome</label>
+    <input id="nome" autocomplete="name" placeholder="Ex.: Ana Souza">
+    <label for="fone">WhatsApp</label>
+    <input id="fone" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000">
+    <label for="cond">Condomínio</label>
+    <input id="cond" placeholder="Nome do condomínio">
+    <div id="apBox">
+      <label for="ap">Bloco e apartamento</label>
+      <input id="ap" placeholder="Ex.: Bloco 2, apto 31">
+    </div>
+    <label for="dia">Dia da feira</label>
+    <input id="dia" type="date">
+    <label for="freq">Quer receber este pedido sempre?</label>
+    <select id="freq"><option value="">Só desta vez</option><option>Toda semana</option><option>A cada 15 dias</option><option>Todo mês</option></select>
+    <label for="obs">Observação (opcional)</label>
+    <textarea id="obs" placeholder="Ex.: banana mais verdinha, sem mamão…"></textarea>
+    <div class="err" id="err" role="alert"></div>
+  </form>
+
+  <section id="pay" class="hidden" aria-live="polite">
+    <h2>4. Pagamento</h2>
+    <div class="seg" role="group" aria-label="Forma de pagamento" style="margin-bottom:14px">
+      <button type="button" id="mPix" aria-pressed="true">Pix</button>
+      <button type="button" id="mCard" aria-pressed="false">Cartão</button>
+    </div>
+    <div id="cardBox" class="hidden">
+      <p>Pagamento no cartão por <b>link de pagamento (InfinitePay)</b>. Toque no botão abaixo e a JC Frutas te envia o link com o valor exato no WhatsApp.</p>
+      <div class="actions">
+        <a class="btn alt hidden" id="cartao" href="#" target="_blank" rel="noopener">Abrir link de pagamento</a>
+        <a class="btn" id="zapCard" href="#" target="_blank" rel="noopener">Pedir link do cartão no WhatsApp</a>
+      </div>
+    </div>
+    <div id="pixBox">
+    <div id="demo" class="warn hidden">Chave Pix de exemplo: não pague este código. A chave Pix ainda não foi cadastrada.</div>
+    <div class="resumo" id="resumo"></div>
+    <div class="qr" id="qr"></div>
+    <p style="text-align:center;margin:0 0 6px"><b>Pix copia e cola</b>, o valor já vem preenchido:</p>
+    <div class="code" id="code"></div>
+    <div class="actions">
+      <button class="btn alt" type="button" id="copy">Copiar código Pix</button>
+      <a class="btn" id="zap" href="#" target="_blank" rel="noopener">Já paguei: enviar comprovante no WhatsApp</a>
+    </div>
+    </div>
+    <div class="rule"><span>!</span><div>Seu pedido <b>só é confirmado depois do pagamento</b>. Sem Pix ou cartão pago, o pedido não é separado.</div></div>
+    <div class="rule"><span>✓</span><div>Mande o comprovante no WhatsApp com o código do pedido. A JC Frutas confirma e entrega no dia escolhido.</div></div>
+    <p class="note" id="zapNum"></p>
+  </section>
+</main>
+
+<div class="modal hidden" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTit">
+  <form class="caixa" id="authForm" novalidate>
+    <button type="button" class="fechar" id="mFechar" aria-label="Fechar">×</button>
+    <h2 id="mTit">Entrar</h2>
+    <p class="note" id="mMsg">Entre para finalizar o pedido e acompanhar suas compras.</p>
+    <div class="seg" id="abas" role="group" aria-label="Entrar ou criar conta"><button type="button" id="tEntrar" aria-pressed="true">Já tenho conta</button><button type="button" id="tCriar" aria-pressed="false">Criar conta</button></div>
+    <div id="soCriar" class="hidden">
+      <label for="aNome">Seu nome</label><input id="aNome" autocomplete="name">
+      <label for="aFone">WhatsApp</label><input id="aFone" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000">
+    </div>
+    <div id="boxEmail"><label for="aEmail">E-mail</label><input id="aEmail" type="email" autocomplete="email"></div>
+    <label for="aSenha">Senha (mínimo 6 caracteres)</label><input id="aSenha" type="password" autocomplete="current-password">
+    <div class="err" id="aErr" role="alert"></div>
+    <div class="actions"><button class="btn" type="submit" id="aOk">Entrar</button>
+    <button type="button" class="link" id="aEsqueci">Esqueci minha senha</button></div>
+  </form>
+</div>
+
+<div class="bar">
+  <div class="prog"><i id="progBar"></i></div>
+  <div class="in">
+    <div class="tot"><span id="itensTxt">Carrinho vazio</span><b id="totTxt">R$ 0,00</b><span class="meta" id="metaTxt"></span></div>
+    <button class="btn" type="button" id="go" disabled>Gerar Pix</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="produtos.js"></script>
+<script>
+{
+
+
+const $ = id => document.getElementById(id);
+let api=null,usuario=null,depoisLogin=null,modoCriar=false,recuperando=false;
+try{ if(window.supabase && typeof SUPABASE_URL==="string" && /^https:\/\//.test(SUPABASE_URL)) api=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) }catch(e){api=null}
+const brl = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const qty = {}; CONFIG.produtos.forEach(c=>qty[c.id]=0); CONFIG.combos.forEach(c=>qty[c.id]=0);
+let entrega = true;
+const demo = !CONFIG.pixChave;
+
+const P=CONFIG.produtos;
+const qtd=n=>String(n).replace(".",",");
+$("combos").innerHTML = P.map(c=>`
+  <article class="item" id="c-${c.id}">
+    <div class="foto" style="background:${esc(c.cor)}">${c.foto?`<img src="${esc(c.foto)}" alt="">`:esc(c.nome[0])}</div>
+    <div class="info"><div class="iname">${esc(c.nome)}</div><div class="iprice">${c.preco==null?`<span>Preço em breve</span>`:`${c.lote>1?`${c.lote} por `:""}${brl(c.preco)}${c.lote>1?"":` <span>${c.un==="kg"?"o quilo":c.un==="cx"?"a caixa":"a unidade"}</span>`}`}</div><div class="isub" id="s-${c.id}"></div></div>
+    <div class="step"><button type="button" data-id="${c.id}" data-d="-1" aria-label="Tirar ${esc(c.nome)}">−</button>
+    <output id="q-${c.id}">0</output>
+    <button type="button" data-id="${c.id}" data-d="1" aria-label="Adicionar ${esc(c.nome)}">+</button></div>
+  </article>`).join("");
+
+const K=CONFIG.combos;
+$("kits").innerHTML = K.map(c=>`
+  <article class="kit" id="c-${c.id}">
+    <img src="${esc(c.foto)}" alt="Frutas do ${esc(c.nome)}">
+    <div class="kb">
+      <div class="kt"><div><div class="cname">${esc(c.nome)}</div><div class="serve">${esc(c.pessoas)}</div></div><div class="price">${brl(c.preco)}</div></div>
+      <ul>${c.itens.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
+      <div class="step"><button type="button" data-id="${c.id}" data-d="-1" aria-label="Tirar ${esc(c.nome)}">−</button>
+      <output id="q-${c.id}">0</output>
+      <button type="button" data-id="${c.id}" data-d="1" aria-label="Adicionar ${esc(c.nome)}">+</button></div>
+    </div>
+  </article>`).join("");
+const ALL=[...K,...P];
+const r2=v=>Math.round(v*100)/100;
+function subtotal(){return r2(ALL.reduce((s,c)=>s+(c.preco||0)*qty[c.id],0))}
+function desconto(){const s=subtotal();return s>CONFIG.descontoMin?r2(s*CONFIG.descontoPct/100):0}
+function total(){
+  let t = subtotal()-desconto();
+  if (t>0 && entrega) t += CONFIG.taxaEntrega;
+  return r2(t);
+}
+function itensLinhas(){
+  return K.filter(c=>qty[c.id]>0).map(c=>`${qty[c.id]}x ${c.nome}: ${brl(c.preco*qty[c.id])}`).concat(P.filter(c=>qty[c.id]>0).map(c=>`${qty[c.id]*c.lote} ${c.un==="kg"?"kg":c.un==="cx"?"cx.":"un."} ${c.nome}${c.lote>1?` (${qty[c.id]}x ${c.lote} por ${brl(c.preco)})`:""}: ${brl(c.preco*qty[c.id])}`));
+}
+function render(){
+  let n=0;
+  K.forEach(c=>{
+    if(qty[c.id]>0) n++;
+    $("q-"+c.id).textContent=qty[c.id];
+    $("c-"+c.id).classList.toggle("on",qty[c.id]>0);
+    $("c-"+c.id).querySelector('[data-d="-1"]').disabled = qty[c.id]===0;
+  });
+  P.forEach(c=>{
+    if(qty[c.id]>0) n++;
+    $("q-"+c.id).textContent=qty[c.id];
+    $("s-"+c.id).textContent=qty[c.id]?`${qty[c.id]*c.lote} ${c.un==="kg"?"kg":c.un==="cx"?(qty[c.id]>1?"caixas":"caixa"):"unidades"} = ${brl(c.preco*qty[c.id])}`:"";
+    $("c-"+c.id).classList.toggle("on",qty[c.id]>0);
+    $("c-"+c.id).querySelector('[data-d="-1"]').disabled = qty[c.id]===0;
+    $("c-"+c.id).querySelector('[data-d="1"]').disabled = c.preco==null;
+  });
+  $("itensTxt").textContent = n ? `${n} ${n>1?"itens":"item"} no carrinho` : "Carrinho vazio";
+  $("totTxt").textContent = brl(total());
+  const sub=subtotal(),falta=r2(CONFIG.descontoMin-sub),ok=sub>CONFIG.descontoMin;
+  $("metaTxt").textContent = !n ? "" : ok ? `${CONFIG.descontoPct}% OFF aplicado: −${brl(desconto())}` : falta>0 ? `Faltam ${brl(falta)} para passar de ${brl(CONFIG.descontoMin)} e ganhar ${CONFIG.descontoPct}% OFF` : `Passe de ${brl(CONFIG.descontoMin)} e ganhe ${CONFIG.descontoPct}% OFF`;
+  $("metaTxt").classList.toggle("ok",ok);
+  $("progBar").style.width=Math.min(100,sub/CONFIG.descontoMin*100)+"%";
+  $("progBar").classList.toggle("ok",ok);
+  $("go").disabled = n===0;
+  $("optEnt").setAttribute("aria-pressed",entrega);
+  $("optRet").setAttribute("aria-pressed",!entrega);
+  $("apBox").classList.toggle("hidden",!entrega);
+  $("optEnt").textContent = "Entregar no meu apê" + (CONFIG.taxaEntrega ? ` (+${brl(CONFIG.taxaEntrega)})` : " (grátis)");
+  $("pay").classList.add("hidden");
+}
+function clique(e){
+  const b=e.target.closest("button[data-id]"); if(!b) return;
+  const c=ALL.find(x=>x.id===b.dataset.id);
+  qty[c.id]=Math.max(0,qty[c.id]+Number(b.dataset.d)); render();
+  if(b.dataset.d==="1"){pop($("c-"+c.id));pop($("totTxt"));voa(b,c.cor||"#d93a26")}
+}
+$("combos").addEventListener("click",clique);
+$("kits").addEventListener("click",clique);
+$("cupomTop").innerHTML=`Cupom automático: ${CONFIG.descontoPct}% OFF<small>Em compras acima de ${brl(CONFIG.descontoMin)} pelo app, o desconto já entra no pagamento.</small>`;
+function metodo(card){$("mPix").setAttribute("aria-pressed",!card);$("mCard").setAttribute("aria-pressed",card);$("pixBox").classList.toggle("hidden",card);$("cardBox").classList.toggle("hidden",!card)}
+$("mPix").onclick=()=>{metodo(false);if(api&&usuario&&codAtual)api.rpc("escolher_pagamento",{p_codigo:codAtual,p_metodo:"pix"})};
+$("mCard").onclick=()=>{metodo(true);if(api&&usuario&&codAtual)api.rpc("escolher_pagamento",{p_codigo:codAtual,p_metodo:"cartao"})};
+$("optEnt").onclick=()=>{entrega=true;render()};
+$("optRet").onclick=()=>{entrega=false;render()};
+$("prazoTxt").textContent = CONFIG.prazo + " A JC Frutas separa e entrega no dia.";
+
+// data mínima: amanhã
+const am = new Date(); am.setDate(am.getDate()+1);
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+$("dia").min = iso(am); $("dia").value = iso(am);
+
+// lembrar dados do cliente neste celular
+const campos=["nome","fone","cond","ap"];
+try{const s=JSON.parse(localStorage.getItem("feira-cliente")||"{}");campos.forEach(k=>{if(s[k])$(k).value=s[k]})}catch(e){}
+
+// ---- Pix BR Code (padrão do Banco Central) ----
+const f=(id,v)=>id+String(v.length).padStart(2,"0")+v;
+const limpa=(s,n)=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9 ]/g,"").toUpperCase().slice(0,n).trim();
+function crc16(s){let c=0xFFFF;for(let i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(let j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return c.toString(16).toUpperCase().padStart(4,"0")}
+function pix(chave,valor,txid){
+  const p=f("00","01")+f("26",f("00","br.gov.bcb.pix")+f("01",chave))+f("52","0000")+f("53","986")+
+    f("54",valor.toFixed(2))+f("58","BR")+f("59",limpa(CONFIG.pixNome,25)||"FEIRA")+f("60",limpa(CONFIG.pixCidade,15)||"SAO PAULO")+
+    f("62",f("05",txid))+"6304";
+  return p+crc16(p);
+}
+
+let pixCode="",codAtual="";
+$("go").onclick=async()=>{
+  if(api&&!usuario){depoisLogin=()=>$("go").click();modo(false);abreModal("Entre ou crie sua conta para finalizar o pedido.");return}
+  const v=k=>$(k).value.trim();
+  let erro="";
+  if(!v("nome")) erro="Coloque seu nome.";
+  else if(v("fone").replace(/\D/g,"").length<10) erro="Coloque seu WhatsApp com DDD.";
+  else if(!v("cond")) erro="Diga o nome do condomínio.";
+  else if(entrega && !v("ap")) erro="Coloque bloco e apartamento para a entrega.";
+  else if(!v("dia") || v("dia")<$("dia").min) erro="Escolha a partir de amanhã.";
+  $("err").textContent=erro;
+  if(erro){$("form").scrollIntoView({behavior:"smooth"});return}
+  try{const s={};campos.forEach(k=>s[k]=v(k));localStorage.setItem("feira-cliente",JSON.stringify(s))}catch(e){}
+
+  const cod="JC"+Date.now().toString(36).toUpperCase().slice(-5)+Math.floor(Math.random()*90+10);
+  const [a,m,d]=v("dia").split("-");
+  const dia=`${d}/${m}`;
+  const t=total();
+  const linhas=itensLinhas();
+  if(desconto()) linhas.push(`Cupom ${CONFIG.descontoPct}% OFF: −${brl(desconto())}`);
+  if(entrega&&CONFIG.taxaEntrega) linhas.push(`Taxa de entrega (${brl(CONFIG.taxaEntrega)})`);
+  const onde = entrega ? `Entregar dia ${dia} no ${v("cond")}, ${v("ap")}` : `Retirar na banca dia ${dia} (${v("cond")})`;
+  const freq=v("freq");
+  const resumo=`Pedido ${cod}\n${linhas.join("\n")}\nTotal: ${brl(t)}\n${onde}${freq?`\nPedido fixo: ${freq} (pago antes de cada entrega)`:""}`;
+  const q=Object.fromEntries(Object.entries(qty).filter(([k,x])=>x>0));
+  if(api&&usuario){
+    $("go").disabled=true;$("go").textContent="Salvando…";
+    await api.from("perfis").upsert({id:usuario.id,email:usuario.email,nome:v("nome"),fone:v("fone"),condominio:v("cond"),apartamento:entrega?v("ap"):null});
+    const {error}=await api.from("pedidos").insert({codigo:cod,itens:q,linhas,subtotal:subtotal(),desconto:desconto(),total:t,entrega,condominio:v("cond"),apartamento:entrega?v("ap"):null,dia:v("dia"),frequencia:freq||null,obs:v("obs")||null});
+    $("go").textContent="Gerar Pix";$("go").disabled=false;
+    if(error){$("err").textContent="Não conseguimos salvar seu pedido. Confira a internet e tente de novo.";return}
+    carregaHistDB();
+  } else salvaHist({cod,dia,t,q});
+  codAtual=cod;
+  $("resumo").textContent=resumo;
+
+  pixCode=pix(CONFIG.pixChave||"chave-exemplo@feira.com",t,cod);
+  $("code").textContent=pixCode;
+  $("demo").classList.toggle("hidden",!demo);
+  const qr=$("qr"); qr.innerHTML="";
+  if(window.QRCode){new QRCode(qr,{text:pixCode,width:220,height:220,correctLevel:QRCode.CorrectLevel.M})}
+  else{qr.textContent="Use o Pix copia e cola abaixo."}
+
+  const msg=`Olá, JC Frutas! Fiz meu pedido da feira.\n\n${resumo}\nNome: ${v("nome")}\nWhatsApp: ${v("fone")}${v("obs")?"\nObs.: "+v("obs"):""}\n\nJá paguei o Pix, segue o comprovante.`;
+  const num=CONFIG.whatsapp.replace(/\D/g,"");
+  $("zap").href=`https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+  $("zapNum").textContent = num ? `WhatsApp da JC Frutas: +${num}` : "Escolha a conversa da JC Frutas no WhatsApp para enviar.";
+  $("cartao").classList.toggle("hidden",!/^https:\/\//.test(CONFIG.linkCartao));
+  if(CONFIG.linkCartao) $("cartao").href=CONFIG.linkCartao;
+  const msgCard=`Olá, JC Frutas! Quero pagar meu pedido no cartão, pode me mandar o link?\n\n${resumo}\nNome: ${v("nome")}\nWhatsApp: ${v("fone")}${v("obs")?"\nObs.: "+v("obs"):""}`;
+  $("zapCard").href=`https://wa.me/${CONFIG.whatsapp.replace(/\D/g,"")}?text=${encodeURIComponent(msgCard)}`;
+  $("pay").classList.remove("hidden");
+  $("pay").scrollIntoView({behavior:"smooth"});
+};
+$("copy").onclick=async()=>{
+  try{await navigator.clipboard.writeText(pixCode);$("copy").textContent="Código copiado! Cole no app do banco"}
+  catch(e){const r=document.createRange();r.selectNodeContents($("code"));const s=getSelection();s.removeAllRanges();s.addRange(r);$("copy").textContent="Código selecionado: toque em Copiar"}
+  setTimeout(()=>$("copy").textContent="Copiar código Pix",3000);
+};
+["nome","fone","cond","ap","dia","obs","freq"].forEach(k=>$(k).addEventListener("input",()=>{$("err").textContent="";$("pay").classList.add("hidden")}));
+function pop(el){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;el.classList.remove("pop");void el.offsetWidth;el.classList.add("pop")}
+function voa(btn,cor){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const r=btn.getBoundingClientRect(),t=$("totTxt").getBoundingClientRect();
+  const d=document.createElement("i");d.className="voo";d.style.background=cor;d.style.left=r.left+r.width/2-10+"px";d.style.top=r.top+r.height/2-10+"px";
+  document.body.appendChild(d);
+  d.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${t.left-r.left}px,${t.top-r.top}px) scale(.4)`,opacity:.2}],{duration:650,easing:"cubic-bezier(.5,-0.4,.7,1)"}).onfinish=()=>d.remove();
+}
+const v=$("bgv"); if(v){v.addEventListener("error",()=>v.remove(),true);const src=v.querySelector("source");src&&src.addEventListener("error",()=>v.remove())}
+// ---- histórico de pedidos neste celular ----
+function lerHist(){try{return JSON.parse(localStorage.getItem("feira-pedidos")||"[]")}catch(e){return[]}}
+function salvaHist(p){const h=lerHist().filter(x=>x.cod!==p.cod);h.unshift(p);try{localStorage.setItem("feira-pedidos",JSON.stringify(h.slice(0,8)))}catch(e){}mostraHist()}
+const STX={aguardando:"Aguardando pagamento",pago:"Pago",entregue:"Entregue",cancelado:"Cancelado"};
+let histDB=null;
+async function carregaHistDB(){
+  if(!api||!usuario){histDB=null;mostraHist();return}
+  const {data,error}=await api.from("pedidos").select("codigo,dia,total,itens,status").order("criado_em",{ascending:false}).limit(5);
+  histDB=error?null:(data||[]).map(p=>({cod:p.codigo,dia:p.dia?p.dia.split("-").reverse().slice(0,2).join("/"):"",t:p.total,q:p.itens,st:p.status}));
+  mostraHist();
+}
+function mostraHist(){
+  const h=(histDB||lerHist()).filter(x=>x&&x.q);
+  $("hist").classList.toggle("hidden",!h.length);
+  $("histList").innerHTML=h.slice(0,3).map((x,i)=>{
+    const nomes=Object.keys(x.q).map(id=>ALL.find(c=>c.id===id)).filter(Boolean).map(c=>c.nome).slice(0,4).join(", ");
+    return `<div class="ped"><div><b>${esc(x.cod)} · ${esc(x.dia)} · ${brl(Number(x.t)||0)}</b>${x.st?`<span class="st ${esc(x.st)}">${esc(STX[x.st]||x.st)}</span>`:""}<small>${esc(nomes)}</small></div><button class="btn alt" type="button" data-h="${i}">Pedir de novo</button></div>`}).join("");
+}
+$("histList").addEventListener("click",e=>{
+  const b=e.target.closest("[data-h]");if(!b)return;
+  const x=(histDB||lerHist()).filter(x=>x&&x.q)[Number(b.dataset.h)];if(!x)return;
+  Object.keys(qty).forEach(k=>qty[k]=0);
+  Object.entries(x.q).forEach(([k,n])=>{const c=ALL.find(c=>c.id===k);if(c&&c.preco!=null)qty[k]=Number(n)||0});
+  render();$("form").scrollIntoView({behavior:"smooth"});
+});
+mostraHist();
+
+// ---- conta do cliente (login com e-mail e senha) ----
+function abreModal(msg){$("mMsg").textContent=msg||"Entre para finalizar o pedido e acompanhar suas compras.";$("aErr").textContent="";$("modal").classList.remove("hidden");setTimeout(()=>(recuperando?$("aSenha"):$("aEmail")).focus(),50)}
+function fechaModal(){$("modal").classList.add("hidden");recuperando=false;$("boxEmail").classList.remove("hidden");$("abas").classList.remove("hidden");$("aEsqueci").classList.remove("hidden")}
+function modo(criar){modoCriar=criar;$("tEntrar").setAttribute("aria-pressed",!criar);$("tCriar").setAttribute("aria-pressed",criar);$("soCriar").classList.toggle("hidden",!criar);$("mTit").textContent=criar?"Criar conta":"Entrar";$("aOk").textContent=criar?"Criar conta":"Entrar";$("aSenha").autocomplete=criar?"new-password":"current-password"}
+$("tEntrar").onclick=()=>modo(false);$("tCriar").onclick=()=>modo(true);
+$("mFechar").onclick=()=>{depoisLogin=null;fechaModal()};
+$("modal").addEventListener("click",e=>{if(e.target.id==="modal"){depoisLogin=null;fechaModal()}});
+$("conta").onclick=async()=>{
+  if(!api)return;
+  if(usuario){await api.auth.signOut();return}
+  modo(false);abreModal();
+};
+const traduz=m=>/Invalid login/i.test(m)?"E-mail ou senha incorretos.":/already registered/i.test(m)?"Esse e-mail já tem conta. Use \"Já tenho conta\".":/at least 6/i.test(m)?"A senha precisa ter pelo menos 6 caracteres.":/not confirmed/i.test(m)?"Confirme seu e-mail pelo link que enviamos e tente de novo.":/valid|format/i.test(m)?"Digite um e-mail válido.":/rate limit|seconds/i.test(m)?"Muitas tentativas. Espere um minuto e tente de novo.":"Não deu certo: "+m;
+$("authForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const email=$("aEmail").value.trim(),senha=$("aSenha").value;
+  $("aErr").textContent="";$("aOk").disabled=true;
+  try{
+    if(recuperando){
+      const {error}=await api.auth.updateUser({password:senha});
+      if(error)throw error; fechaModal(); return;
+    }
+    if(modoCriar){
+      if(!$("aNome").value.trim()){$("aErr").textContent="Coloque seu nome.";return}
+      const {data,error}=await api.auth.signUp({email,password:senha,options:{data:{nome:$("aNome").value.trim(),fone:$("aFone").value.trim()}}});
+      if(error)throw error;
+      $("nome").value=$("aNome").value.trim(); if($("aFone").value.trim())$("fone").value=$("aFone").value.trim();
+      if(!data.session){$("aErr").textContent="Conta criada! Abra seu e-mail, toque no link de confirmação e depois entre aqui.";modo(false);return}
+    } else {
+      const {error}=await api.auth.signInWithPassword({email,password:senha});
+      if(error)throw error;
+    }
+  }catch(err){$("aErr").textContent=traduz((err&&err.message)||"")}
+  finally{$("aOk").disabled=false}
+});
+$("aEsqueci").onclick=async()=>{
+  const email=$("aEmail").value.trim();
+  if(!email){$("aErr").textContent="Digite seu e-mail acima e toque de novo em Esqueci minha senha.";return}
+  const {error}=await api.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+  $("aErr").textContent=error?traduz(error.message):"Pronto! Enviamos um link para o seu e-mail para criar uma senha nova.";
+};
+async function aoEntrar(sess){
+  usuario=sess?sess.user:null;
+  $("conta").textContent=usuario?"Sair":"Entrar";
+  if(usuario){
+    const {data}=await api.from("perfis").select("*").eq("id",usuario.id).maybeSingle();
+    const meta=usuario.user_metadata||{};
+    const pf={nome:(data&&data.nome)||meta.nome,fone:(data&&data.fone)||meta.fone,cond:data&&data.condominio,ap:data&&data.apartamento};
+    Object.entries(pf).forEach(([k,val])=>{if(val&&!$(k).value)$(k).value=val});
+    if(!data) await api.from("perfis").upsert({id:usuario.id,email:usuario.email,nome:pf.nome||null,fone:pf.fone||null});
+    if(!recuperando&&!$("modal").classList.contains("hidden"))fechaModal();
+    if(depoisLogin){const f=depoisLogin;depoisLogin=null;f()}
+  }
+  carregaHistDB();
+}
+if(api){
+  $("conta").classList.remove("hidden");
+  api.auth.onAuthStateChange((ev,sess)=>{
+    if(ev==="PASSWORD_RECOVERY"){recuperando=true;modo(false);abreModal("Crie sua senha nova.");$("mTit").textContent="Senha nova";$("aOk").textContent="Salvar senha";$("boxEmail").classList.add("hidden");$("abas").classList.add("hidden");$("aEsqueci").classList.add("hidden");return}
+    setTimeout(()=>aoEntrar(sess),0);
+  });
+}
+
+// ---- música de feira (composição própria, tocada pelo navegador) ----
+let ac=null,mg=null,timer=null,passo=0,prox=0;
+const BPM=118,S16=60/BPM/4;
+const mel=[67,0,71,0,74,0,0,71, 72,0,71,0,69,0,67,0, 65,0,69,0,72,0,0,69, 71,0,69,0,67,0,0,0];
+const bas=[[0,43],[3,43],[4,38],[8,43],[11,43],[12,38],[16,41],[19,41],[20,36],[24,43],[27,43],[28,38]];
+const hz=m=>440*2**((m-69)/12);
+function nota(t,m,d,tipo,vol,filt){const o=ac.createOscillator(),g=ac.createGain(),f=ac.createBiquadFilter();o.type=tipo;o.frequency.value=hz(m);f.type="lowpass";f.frequency.value=filt;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.015);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(f).connect(g).connect(mg);o.start(t);o.stop(t+d+.05)}
+let ruido=null;
+function triangulo(t,aberto){const b=ac.createBufferSource();b.buffer=ruido;const f=ac.createBiquadFilter(),g=ac.createGain();f.type="highpass";f.frequency.value=7000;g.gain.setValueAtTime(aberto?.25:.1,t);g.gain.exponentialRampToValueAtTime(.001,t+(aberto?.25:.05));b.connect(f).connect(g).connect(mg);b.start(t);b.stop(t+.3)}
+function zabumba(t,m){const o=ac.createOscillator(),g=ac.createGain();o.type="sine";o.frequency.setValueAtTime(hz(m)*2,t);o.frequency.exponentialRampToValueAtTime(hz(m),t+.08);g.gain.setValueAtTime(.7,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(g).connect(mg);o.start(t);o.stop(t+.4)}
+function agenda(){
+  while(prox<ac.currentTime+.15){
+    const i=passo%32;
+    if(mel[i]){nota(prox,mel[i],S16*1.8,"sawtooth",.18,1800);nota(prox,mel[i]-12+7,S16*1.8,"square",.05,1200)}
+    bas.forEach(([s,m])=>{if(s===i)zabumba(prox,m)});
+    triangulo(prox,i%4===2);
+    prox+=S16;passo++;
+  }
+}
+const sb=$("som");
+sb.onclick=async()=>{
+  try{
+    if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();mg=ac.createGain();mg.gain.value=.12;mg.connect(ac.destination);
+      ruido=ac.createBuffer(1,ac.sampleRate*.3,ac.sampleRate);const d=ruido.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}
+    if(timer){clearInterval(timer);timer=null;await ac.suspend();sb.textContent="♪ Música de feira";sb.setAttribute("aria-pressed","false");return}
+    await ac.resume();prox=ac.currentTime+.05;timer=setInterval(agenda,40);agenda();
+    sb.textContent="Pausar música";sb.setAttribute("aria-pressed","true");
+  }catch(e){sb.classList.add("hidden")}
+};
+render();
+}
+</script>
+</body>
+</html>
